@@ -1,23 +1,31 @@
-// frontend/src/pages/Auth.jsx
+
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function Auth({ mode = 'login' }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
-  const { login, register } = useAuth();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (mode === 'login') {
       const result = await login(email, password);
-      if (!result.success) alert(result.message);
+      if (result.success) {
+        navigate('/'); 
+      } else {
+        alert(result.message);
+      }
     } else {
       const result = await register(name, email, password);
-      if (!result.success) alert(result.message);
+      if (result.success) {
+        navigate('/'); 
+      } else {
+        alert(result.message);
+      }
     }
   };
+
+
 
   return (
     <div className="p-6">

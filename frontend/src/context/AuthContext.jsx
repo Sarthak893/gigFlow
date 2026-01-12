@@ -1,38 +1,37 @@
+import { createContext, useContext, useState, useEffect } from "react";
+import { api } from "../utils/api";
 
-import { createContext, useContext, useState, useEffect } from 'react';
-import { api } from '../utils/api';
-
-const AuthContext = createContext();
+const AuthContext = createContext(null);
 
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-useEffect(() => {
-  const checkAuth = async () => {
-    try {
-      const res = await fetch('http://localhost:5000/api/auth/me', {
-        credentials: 'include',
-      });
 
-      if (res.ok) {
-        const data = await res.json();
-        setUser(data);
-      } else {
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await fetch(
+          `${import.meta.env.VITE_API_BASE}/auth/me`,
+          { credentials: "include" }
+        );
+
+        if (res.ok) {
+          setUser(await res.json());
+        } else {
+          setUser(null);
+        }
+      } catch (err) {
+        console.error("Auth check failed:", err);
         setUser(null);
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      console.error('Auth check failed:', err);
-      setUser(null);
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
-  checkAuth();
-}, []);
-
+    checkAuth();
+  }, []);
 
   const login = async (email, password) => {
     const res = await api.login({ email, password });
@@ -41,8 +40,7 @@ useEffect(() => {
       setUser({ id: data.userId, name: data.name });
       return { success: true };
     }
-    const error = await res.json();
-    return { success: false, message: error.message };
+    return { success: false, message: (await res.json()).message };
   };
 
   const register = async (name, email, password) => {
@@ -52,8 +50,7 @@ useEffect(() => {
       setUser({ id: data.userId, name: data.name });
       return { success: true };
     }
-    const error = await res.json();
-    return { success: false, message: error.message };
+    return { success: false, message: (await res.json()).message };
   };
 
   const logout = async () => {

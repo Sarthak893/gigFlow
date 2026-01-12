@@ -48,4 +48,20 @@ const getGigs = async (req, res) => {
   }
 };
 
-module.exports = { createGig, getGigs };
+const getGigById = async (req, res) => {
+  try {
+    const gig = await Gig.findById(req.params.id)
+      .populate('ownerId', 'name');
+
+    if (!gig) {
+      return res.status(404).json({ message: 'Gig not found' });
+    }
+
+    res.json(gig);
+  } catch (err) {
+    console.error('Get gig by ID error:', err.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+module.exports = { createGig, getGigs, getGigById };

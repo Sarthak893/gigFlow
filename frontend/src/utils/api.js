@@ -1,5 +1,5 @@
-// frontend/src/utils/api.js
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = import.meta.env.VITE_API_BASE;
+
 
 export const api = {
   // Auth
@@ -7,7 +7,7 @@ export const api = {
     fetch(`${API_BASE}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
+      credentials: 'include', 
       body: JSON.stringify(data)
     }),
 
@@ -15,19 +15,21 @@ export const api = {
     fetch(`${API_BASE}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
+      credentials: 'include', 
       body: JSON.stringify(data)
     }),
 
   logout: () =>
     fetch(`${API_BASE}/auth/logout`, {
       method: 'POST',
-      credentials: 'include'
+      credentials: 'include' 
     }),
 
   // Gigs
   getGigs: (search = '') =>
-    fetch(`${API_BASE}/gigs${search ? `?search=${encodeURIComponent(search)}` : ''}`),
+    fetch(`${API_BASE}/gigs${search ? `?search=${encodeURIComponent(search)}` : ''}`, {
+      credentials: 'include' 
+    }),
 
   createGig: (data) =>
     fetch(`${API_BASE}/gigs`, {
@@ -48,14 +50,14 @@ export const api = {
 
   getBids: (gigId) =>
     fetch(`${API_BASE}/gigs/${gigId}/bids`, {
-      credentials: 'include'
+      credentials: 'include' 
     }),
 
   hireFreelancer: (gigId, freelancerId) =>
     fetch(`${API_BASE}/gigs/${gigId}/hire`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
+      credentials: 'include', 
       body: JSON.stringify({ freelancerId })
     })
 };
