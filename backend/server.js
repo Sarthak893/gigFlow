@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/gigs', require('./routes/gigRoutes'));
-
+app.use('/api/bids', require('./routes/bidRoutes'));
 app.get('/', (req, res) => {
   res.send('GigFlow Backend Running!');
 });
