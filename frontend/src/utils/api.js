@@ -38,6 +38,10 @@ export const api = {
       credentials: 'include',
       body: JSON.stringify(data)
     }),
+  getMyGigs: () =>
+    fetch(`${API_BASE}/gigs/mine`, { credentials: 'include' }),
+
+  
 
   // Bids
   placeBid: (data) =>
@@ -52,6 +56,8 @@ export const api = {
     fetch(`${API_BASE}/gigs/${gigId}/bids`, {
       credentials: 'include' 
     }),
+  getMyBids: () =>
+  fetch(`${API_BASE}/bids/mine`, { credentials: 'include' }),
 
   hireFreelancer: (gigId, freelancerId) =>
     fetch(`${API_BASE}/gigs/${gigId}/hire`, {

@@ -1,6 +1,6 @@
 
 const express = require('express');
-const { createGig, getGigs, getGigById } = require('../controllers/gigController');
+const { createGig, getGigs, getGigById, getMyGigs } = require('../controllers/gigController');
 const { protect } = require('../middleware/auth');
 
 const router = express.Router();
@@ -12,4 +12,7 @@ router.route('/')
 
 router.route('/:id')
   .get(getGigById);
+
+router.route('/mine').get(protect, getMyGigs);
+
 module.exports = router;

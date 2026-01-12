@@ -1,11 +1,12 @@
-// frontend/src/App.jsx
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Home from './pages/Home';
-// 
+import Dashboard from './pages/Dashboard';
 import GigDetail from './pages/GigDetail';
 import Auth from './pages/Auth';
 import './index.css';
+import PostGig from './pages/PostGig';
 
 const ProtectedRoute = ({ children }) => {
   const { user, loading } = useAuth();
@@ -34,14 +35,14 @@ function AppContent() {
           <Route path="/" element={<Home />} />
            <Route path="/login" element={<Auth mode="login" />} />
           <Route path="/register" element={<Auth mode="register" />} />
-          {/* <Route
+          <Route
             path="/dashboard"
             element={
               <ProtectedRoute>
                 <Dashboard />
               </ProtectedRoute>
             }
-          /> */}
+          /> 
           <Route
             path="/gigs/:id"
             element={
@@ -50,6 +51,15 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path="/post-gig"
+            element={
+              <ProtectedRoute>
+                <PostGig />
+              </ProtectedRoute>
+  }
+/>
+
         </Routes>
       </main>
     </div>
