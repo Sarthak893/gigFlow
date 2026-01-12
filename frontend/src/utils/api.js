@@ -1,0 +1,61 @@
+// frontend/src/utils/api.js
+const API_BASE = 'http://localhost:5000/api';
+
+export const api = {
+  // Auth
+  register: (data) => 
+    fetch(`${API_BASE}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(data)
+    }),
+
+  login: (data) =>
+    fetch(`${API_BASE}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(data)
+    }),
+
+  logout: () =>
+    fetch(`${API_BASE}/auth/logout`, {
+      method: 'POST',
+      credentials: 'include'
+    }),
+
+  // Gigs
+  getGigs: (search = '') =>
+    fetch(`${API_BASE}/gigs${search ? `?search=${encodeURIComponent(search)}` : ''}`),
+
+  createGig: (data) =>
+    fetch(`${API_BASE}/gigs`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(data)
+    }),
+
+  // Bids
+  placeBid: (data) =>
+    fetch(`${API_BASE}/bids`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(data)
+    }),
+
+  getBids: (gigId) =>
+    fetch(`${API_BASE}/gigs/${gigId}/bids`, {
+      credentials: 'include'
+    }),
+
+  hireFreelancer: (gigId, freelancerId) =>
+    fetch(`${API_BASE}/gigs/${gigId}/hire`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ freelancerId })
+    })
+};

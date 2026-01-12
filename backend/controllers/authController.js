@@ -54,9 +54,18 @@ const login = async (req, res) => {
   }
 };
 
+const getCurrentUser = async (req, res) => {
+  if (req.user) {
+    res.json({ id: req.user._id, name: req.user.name, email: req.user.email });
+  } else {
+    res.status(401).json({ message: 'Not authenticated' });
+  }
+};
+
+
 const logout = (req, res) => {
   res.clearCookie('token');
   res.json({ success: true });
 };
 
-module.exports = { register, login, logout };
+module.exports = { register, login, logout, getCurrentUser };
