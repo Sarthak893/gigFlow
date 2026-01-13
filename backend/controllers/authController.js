@@ -28,7 +28,6 @@ const register = async (req, res) => {
       secure: false, 
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000 ,
-      path: '/'
     });
 
     res.status(201).json({ success: true, userId: user._id, name: user.name });
