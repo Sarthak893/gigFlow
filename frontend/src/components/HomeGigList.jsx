@@ -11,7 +11,7 @@ export default function HomeGigList() {
   useEffect(() => {
     const fetchGigs = async () => {
       try {
-        const res = await fetch('${API_BASE}/gigs');
+        const res = await fetch(`${API_BASE}/gigs`);
         const data = await res.json();
         setGigs(data);
       } catch (err) {
