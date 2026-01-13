@@ -10,7 +10,8 @@ dotenv.config();
 const app = express();
 app.use(cors({ 
     
-    origin: 'https://gig-flow-virid-two.vercel.app/',
+    origin:
+    'http://localhost:5173',
     credentials: true, 
 
 }));
