@@ -35,37 +35,39 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 py-16">
-        <div className="container mx-auto px-4 text-center max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            {user ? `Hello, ${user.name}!` : 'Welcome to GigFlow'}
-          </h1>
-          <p className="text-xl text-gray-600 mb-8">
-            {user
-              ? 'Post a gig or find your next opportunity.'
-              : 'Join freelancers and clients in a seamless marketplace.'}
-          </p>
-          
-          {!user && (
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link
-                to="/register"
-                className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium text-lg transition shadow-md"
-              >
-                Get Started
-              </Link>
-              <Link
-                to="/login"
-                className="bg-white hover:bg-gray-100 text-gray-800 border border-gray-300 px-6 py-3 rounded-lg font-medium text-lg transition"
-              >
-                Sign In
-              </Link>
+        <div className="bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-16">
+          <div className="container mx-auto px-4 text-center max-w-3xl">
+            <div className="inline-block bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium mb-4">
+                Freelance Marketplace
             </div>
-          )}
-        </div>
-      </div>
-
-      {/* Search & Gig Listing */}
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+              {user ? `Hello, ${user.name}!` : 'Welcome to GigFlow'}
+            </h1>
+            <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                {user
+                ? 'Post a gig or find your next opportunity.'
+                : 'Connect with freelancers and clients in a seamless, secure marketplace.'}
+            </p>
+    
+            {!user && (
+              <div className="flex flex-col sm:flex-row justify-center gap-4">
+                <Link
+                  to="/register"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3.5 rounded-xl font-medium text-lg transition shadow-lg hover:shadow-xl"
+                >
+                  Get Started
+                </Link>
+                <Link
+                  to="/login"
+                  className="bg-white hover:bg-gray-50 text-indigo-600 border border-indigo-200 px-8 py-3.5 rounded-xl font-medium text-lg transition shadow-sm"
+                  >
+                  Sign In
+                </Link>
+              </div>
+                      )}
+    </div>
+     </div>
+       {/* Search & Gig Listing */}
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-2xl mx-auto mb-10">
           <form onSubmit={handleSearch} className="flex gap-2">
