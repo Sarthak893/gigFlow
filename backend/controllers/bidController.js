@@ -36,6 +36,7 @@ const placeBid = async (req, res) => {
   }
 };
 
+// backend/controllers/bidController.js
 const getBidsForGig = async (req, res) => {
   const { id: gigId } = req.params;
   const userId = req.user._id;
@@ -44,12 +45,8 @@ const getBidsForGig = async (req, res) => {
     const gig = await Gig.findById(gigId);
     if (!gig) return res.status(404).json({ message: 'Gig not found' });
 
-    const hasAccess = gig.ownerId.toString() === userId.toString();
-    if (!hasAccess) {
-      const userBid = await Bid.findOne({ gigId, freelancerId: userId });
-      if (!userBid) {
-        return res.status(403).json({ message: 'Access denied' });
-      }
+    if (gig.ownerId.toString() !== userId.toString()) {
+      return res.status(403).json({ message: 'Only the gig owner can view bids' });
     }
 
     const bids = await Bid.find({ gigId })
@@ -62,9 +59,7 @@ const getBidsForGig = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
-// @desc    Hire a freelancer for a gig (atomic operation)
-// @route   PATCH /api/gigs/:id/hire
-// @access  Private (only gig owner)
+
 const hireFreelancer = async (req, res) => {
   const { id: gigId } = req.params;
   const { freelancerId } = req.body;
@@ -107,5 +102,17 @@ const hireFreelancer = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 };
+const getMyBids = async (req, res) => {
+  try {
+    const bids = await Bid.find({ freelancerId: req.user._id })
+      .populate('gigId', 'title budget status')
+      .populate('freelancerId', 'name')
+      .sort({ createdAt: -1 });
+    res.json(bids);
+  } catch (err) {
+    console.error('Get my bids error:', err.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
-module.exports = { placeBid, getBidsForGig, hireFreelancer };
+module.exports = { placeBid, getBidsForGig, hireFreelancer , getMyBids };

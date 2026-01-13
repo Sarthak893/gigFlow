@@ -1,4 +1,4 @@
-// frontend/src/pages/GigDetail.jsx
+
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -16,19 +16,23 @@ export default function GigDetail() {
   const [bidAmount, setBidAmount] = useState('');
   const [bidMessage, setBidMessage] = useState('');
 
-  // Fetch gig and bids on load
+ 
   useEffect(() => {
     const fetchGigAndBids = async () => {
       try {
+        
         const gigRes = await fetch(`http://localhost:5000/api/gigs/${gigId}`);
         if (!gigRes.ok) throw new Error('Gig not found');
         const gigData = await gigRes.json();
         setGig(gigData);
 
-        const bidsRes = await api.getBids(gigId);
-        if (bidsRes.ok) {
-          const bidsData = await bidsRes.json();
-          setBids(bidsData);
+       
+        if (user) {
+          const bidsRes = await api.getBids(gigId);
+          if (bidsRes.ok) {
+            const bidsData = await bidsRes.json();
+            setBids(bidsData);
+          }
         }
       } catch (err) {
         setError(err.message);
@@ -38,10 +42,12 @@ export default function GigDetail() {
     };
 
     fetchGigAndBids();
-  }, [gigId]);
+  }, [gigId, user]);
+
   const isOwner = gig?.ownerId?._id === user?.id;
   const hasBid = bids.some(bid => bid.freelancerId._id === user?.id);
   const canBid = !isOwner && gig?.status === 'open' && !hasBid;
+
   const handlePlaceBid = async (e) => {
     e.preventDefault();
     if (!bidAmount || isNaN(bidAmount)) return;
@@ -58,6 +64,7 @@ export default function GigDetail() {
         setBids([newBid, ...bids]);
         setBidAmount('');
         setBidMessage('');
+        alert('Bid placed successfully!');
       } else {
         const err = await res.json();
         alert(err.message || 'Failed to place bid');
@@ -76,7 +83,7 @@ export default function GigDetail() {
       if (res.ok) {
         const updatedGig = await res.json();
         setGig(updatedGig);
-        alert('Freelancer hired successfully!');
+        alert('Freelancer hired successfully! The gig is now closed.');
       } else {
         const err = await res.json();
         alert(err.message || 'Failed to hire');
@@ -86,12 +93,14 @@ export default function GigDetail() {
     }
   };
 
+
   if (loading) return <div className="p-6">Loading gig details...</div>;
   if (error) return <div className="p-6 text-red-600">Error: {error}</div>;
   if (!gig) return <div className="p-6">Gig not found</div>;
 
   return (
     <div className="max-w-4xl mx-auto p-6">
+     
       <div className="bg-white rounded-lg shadow-md p-6 mb-6">
         <div className="flex justify-between items-start">
           <div>
@@ -114,7 +123,7 @@ export default function GigDetail() {
       </div>
 
       
-      {canBid && (
+      {user && canBid && (
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
           <h2 className="text-xl font-bold mb-4">Place a Bid</h2>
           <form onSubmit={handlePlaceBid} className="space-y-4">
@@ -149,38 +158,59 @@ export default function GigDetail() {
         </div>
       )}
 
-      {/* Bids Section - For owner or bidders */}
-      {(isOwner || hasBid) && bids.length > 0 && (
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-bold mb-4">Bids ({bids.length})</h2>
-          <div className="space-y-4">
-            {bids.map(bid => (
-              <div key={bid._id} className="border-b pb-4 last:border-0 last:pb-0">
-                <div className="flex justify-between">
-                  <div>
-                    <p className="font-medium">{bid.freelancerId.name}</p>
-                    <p className="text-gray-600 text-sm">{bid.message || 'No message'}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-lg font-bold text-green-600">${bid.amount}</p>
-                    {isOwner && gig.status === 'open' && (
-                      <button
-                        onClick={() => handleHire(bid.freelancerId._id)}
-                        className="mt-2 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
-                      >
-                        Hire
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+     
+      {user && isOwner && (
+        <div className="bg-yellow-50 border border-yellow-200 rounded p-4 mb-6 text-center">
+          <p className="text-yellow-800">You cannot bid on your own gig.</p>
         </div>
       )}
 
-      {((isOwner || hasBid) && bids.length === 0) && (
+  
+     {isOwner && bids.length > 0 && (
+  <div className="bg-white rounded-lg shadow-md p-6">
+    <h2 className="text-xl font-bold mb-4">Bids Received ({bids.length})</h2>
+    <div className="space-y-4">
+      {bids.map(bid => (
+        <div key={bid._id} className="border-b pb-4 last:border-0 last:pb-0">
+          <div className="flex justify-between">
+            <div>
+              <p className="font-medium">{bid.freelancerId.name}</p>
+              <p className="text-gray-600 text-sm">{bid.message || 'No message'}</p>
+            </div>
+            <div className="text-right">
+              <p className="text-lg font-bold text-green-600">${bid.amount}</p>
+              {gig?.status === 'open' && (
+                <button
+                  onClick={() => handleHire(bid.freelancerId._id)}
+                  className="mt-2 bg-green-600 text-white px-3 py-1 rounded text-sm hover:bg-green-700"
+                >
+                  Hire
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+
+      {user && ((isOwner && bids.length === 0) || (hasBid && bids.length === 0)) && (
         <p className="text-gray-500">No bids yet.</p>
+      )}
+
+      
+      {!user && (
+        <div className="bg-blue-50 border border-blue-200 rounded p-4 text-center">
+          <p className="text-blue-800">Log in to place a bid on this gig.</p>
+          <button
+            onClick={() => navigate('/login')}
+            className="mt-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded text-sm"
+          >
+            Sign In
+          </button>
+        </div>
       )}
     </div>
   );

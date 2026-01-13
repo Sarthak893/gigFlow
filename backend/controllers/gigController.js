@@ -1,5 +1,6 @@
 const Gig = require('../models/Gig');
 
+
 const createGig = async (req, res) => {
   const { title, description, budget } = req.body;
 
@@ -66,8 +67,10 @@ const getGigById = async (req, res) => {
 
 const getMyGigs = async (req, res) => {
   try {
+    console.log('User ID:', req.user._id); 
     const gigs = await Gig.find({ ownerId: req.user._id })
       .sort({ createdAt: -1 });
+    console.log('Found gigs:', gigs.length); 
     res.json(gigs);
   } catch (err) {
     console.error('Get my gigs error:', err.message);
@@ -75,17 +78,5 @@ const getMyGigs = async (req, res) => {
   }
 };
 
-const getMyBids = async (req, res) => {
-  try {
-    const bids = await Bid.find({ freelancerId: req.user._id })
-      .populate('gigId', 'title budget status')
-      .populate('freelancerId', 'name')
-      .sort({ createdAt: -1 });
-    res.json(bids);
-  } catch (err) {
-    console.error('Get my bids error:', err.message);
-    res.status(500).json({ message: 'Server error' });
-  }
-};
 
-module.exports = { createGig, getGigs, getGigById, getMyGigs, getMyBids };
+module.exports = { createGig, getGigs, getGigById, getMyGigs };

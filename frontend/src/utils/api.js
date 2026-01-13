@@ -52,18 +52,18 @@ export const api = {
       body: JSON.stringify(data)
     }),
 
+  // frontend/src/utils/api.js
   getBids: (gigId) =>
-    fetch(`${API_BASE}/gigs/${gigId}/bids`, {
-      credentials: 'include' 
-    }),
+  fetch(`${API_BASE}/bids/gigs/${gigId}/bids`, { credentials: 'include' }),
+
   getMyBids: () =>
   fetch(`${API_BASE}/bids/mine`, { credentials: 'include' }),
 
-  hireFreelancer: (gigId, freelancerId) =>
-    fetch(`${API_BASE}/gigs/${gigId}/hire`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include', 
-      body: JSON.stringify({ freelancerId })
-    })
+ hireFreelancer: (gigId, freelancerId) =>
+  fetch(`${API_BASE}/gigs/${gigId}/hire`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify({ freelancerId })
+  })
 };
