@@ -36,7 +36,7 @@ const placeBid = async (req, res) => {
   }
 };
 
-// backend/controllers/bidController.js
+
 const getBidsForGig = async (req, res) => {
   const { id: gigId } = req.params;
   const userId = req.user._id;
@@ -70,7 +70,7 @@ const hireFreelancer = async (req, res) => {
   }
 
   try {
-    // Find gig and verify ownership
+    
     const gig = await Gig.findById(gigId);
     if (!gig) return res.status(404).json({ message: 'Gig not found' });
     if (gig.ownerId.toString() !== clientId.toString()) {
@@ -80,18 +80,16 @@ const hireFreelancer = async (req, res) => {
       return res.status(400).json({ message: 'Gig is not open for hiring' });
     }
 
-    // Verify bid exists
     const bid = await Bid.findOne({ gigId, freelancerId });
     if (!bid) {
       return res.status(400).json({ message: 'No bid found from this freelancer' });
     }
 
-    // ATOMIC UPDATE: Close gig and mark as hired in one operation
     const updatedGig = await Gig.findByIdAndUpdate(
       gigId,
       { 
         status: 'closed',
-        hiredFreelancer: freelancerId // Optional: store who was hired
+        hiredFreelancer: freelancerId 
       },
       { new: true, runValidators: true }
     );

@@ -1,4 +1,4 @@
-// backend/models/Bid.js
+
 const mongoose = require('mongoose');
 
 const bidSchema = new mongoose.Schema({
@@ -25,7 +25,7 @@ const bidSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// Prevent duplicate bids from same freelancer on same gig
+
 bidSchema.index({ gigId: 1, freelancerId: 1 }, { unique: true });
 
 module.exports = mongoose.model('Bid', bidSchema);

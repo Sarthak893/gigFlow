@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { isValidEmail } from '../utils/validation'; // 👈 IMPORT VALIDATOR
+import { isValidEmail, getAllowedDomainsMessage, isValidPassword, getPasswordRequirementsMessage } from '../utils/validation';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -22,11 +22,11 @@ export default function Login() {
     if (!isValidEmail(email)) {
       return setError('Please enter a valid email address');
     }
+    if (!isValidPassword(password)) {
+      return setError(getPasswordRequirementsMessage());}
 
-    // Password validation
-    if (password.length < 1) {
-      return setError('Password is required');
-    }
+
+
 
     const result = await login(email, password);
     if (!result.success) {

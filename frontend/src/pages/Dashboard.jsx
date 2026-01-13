@@ -1,4 +1,4 @@
-// frontend/src/pages/Dashboard.jsx
+
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -10,19 +10,25 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('gigs');
   const [myGigs, setMyGigs] = useState([]);
   const [myBids, setMyBids] = useState([]);
+  const [openOpportunities, setOpenOpportunities] = useState(0); // 👈 NEW STATE
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [gigsRes, bidsRes] = await Promise.all([
+        const [gigsRes, bidsRes, statsRes] = await Promise.all([
           api.getMyGigs(),
-          api.getMyBids()
+          api.getMyBids(),
+          api.getGigStats() // 👈 FETCH STATS
         ]);
+        
         const gigs = gigsRes.ok ? await gigsRes.json() : [];
         const bids = bidsRes.ok ? await bidsRes.json() : [];
+        const stats = statsRes.ok ? await statsRes.json() : { openGigs: 0 };
+
         setMyGigs(gigs);
         setMyBids(bids);
+        setOpenOpportunities(stats.openGigs); // 👈 SET DYNAMIC VALUE
       } catch (err) {
         console.error('Dashboard fetch error:', err);
       } finally {
@@ -72,7 +78,7 @@ export default function Dashboard() {
           </div>
           <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
             <p className="text-gray-600 text-sm">Open Opportunities</p>
-            <p className="text-2xl font-bold text-amber-600">12</p>
+            <p className="text-2xl font-bold text-amber-600">{openOpportunities}</p>
           </div>
         </div>
       </div>

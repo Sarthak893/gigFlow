@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { isValidEmail } from '../utils/validation'; // 👈 IMPORT VALIDATOR
+import { isValidEmail, getAllowedDomainsMessage, isValidPassword, getPasswordRequirementsMessage } from '../utils/validation';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -21,7 +21,7 @@ export default function Register() {
       return setError('Name must be at least 2 characters');
     }
 
-    // Email validation
+    
     if (!email) {
       return setError('Email is required');
     }
@@ -29,10 +29,9 @@ export default function Register() {
       return setError('Please enter a valid email address');
     }
 
-    // Password validation
-    if (password.length < 6) {
-      return setError('Password must be at least 6 characters');
-    }
+    if (!isValidPassword(password)) {
+  return setError(getPasswordRequirementsMessage());
+}
 
     const result = await register(name, email, password);
     if (!result.success) {

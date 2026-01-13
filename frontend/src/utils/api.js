@@ -40,6 +40,11 @@ export const api = {
     }),
   getMyGigs: () =>
     fetch(`${API_BASE}/gigs/mine`, { credentials: 'include' }),
+  
+  getGigStats: () =>
+  fetch(`${API_BASE}/gigs/stats`, {
+    credentials: 'include'
+  }),
 
   
 

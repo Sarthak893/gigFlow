@@ -1,6 +1,6 @@
 
 const express = require('express');
-const { createGig, getGigs, getGigById, getMyGigs } = require('../controllers/gigController');
+const { createGig, getGigs, getGigById, getMyGigs, getGigStats } = require('../controllers/gigController');
 const { protect } = require('../middleware/auth');
 const { getBidsForGig, hireFreelancer } = require('../controllers/bidController');
 
@@ -13,8 +13,12 @@ router.route('/')
 
 router.route('/mine').get(protect, getMyGigs);
 
+router.route('/stats')
+  .get(getGigStats);
+
 router.route('/:id')
   .get(getGigById);
+
 
 
 

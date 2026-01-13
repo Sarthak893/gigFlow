@@ -78,5 +78,15 @@ const getMyGigs = async (req, res) => {
   }
 };
 
+const getGigStats = async (req, res) => {
+  try {
+    const openGigsCount = await Gig.countDocuments({ status: 'open' });
+    res.json({ openGigs: openGigsCount });
+  } catch (err) {
+    console.error('Get gig stats error:', err.message);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
 
-module.exports = { createGig, getGigs, getGigById, getMyGigs };
+
+module.exports = { createGig, getGigs, getGigById, getMyGigs , getGigStats };
