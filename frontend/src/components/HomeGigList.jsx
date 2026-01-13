@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+const API_BASE = import.meta.env.VITE_API_BASE;
+
 export default function HomeGigList() {
   const [gigs, setGigs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -9,7 +11,7 @@ export default function HomeGigList() {
   useEffect(() => {
     const fetchGigs = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/gigs');
+        const res = await fetch('${API_BASE}/gigs');
         const data = await res.json();
         setGigs(data);
       } catch (err) {
