@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import GigCard from '../components/GigCard';
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function Home() {
   const { user } = useAuth();
@@ -17,7 +18,7 @@ export default function Home() {
   const fetchGigs = async (query = '') => {
     setLoading(true);
     try {
-      const res = await fetch(`http://localhost:5000/api/gigs${query ? `?search=${encodeURIComponent(query)}` : ''}`);
+      const res = await fetch(`${API_BASE}/gigs${query ? `?search=${encodeURIComponent(query)}` : ''}`);
       const data = await res.json();
       setGigs(data);
     } catch (err) {
