@@ -16,7 +16,7 @@ export default function Register() {
     e.preventDefault();
     setError('');
 
-    // Name validation
+    
     if (name.trim().length < 2) {
       return setError('Name must be at least 2 characters');
     }

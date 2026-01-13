@@ -1,6 +1,4 @@
-// frontend/src/utils/validation.js
 
-// ===== EMAIL VALIDATION =====
 const ALLOWED_DOMAINS = [
   'gmail.com',
   'yahoo.com',
@@ -27,21 +25,20 @@ export const getAllowedDomainsMessage = () => {
   return `Please use a valid email from: ${ALLOWED_DOMAINS.join(', ')}`;
 };
 
-// ===== PASSWORD VALIDATION =====
+
 export const isValidPassword = (password) => {
-  // Must be at least 8 characters
+
   if (password.length < 8) return false;
   
-  // Must contain at least one uppercase letter
+  
   if (!/[A-Z]/.test(password)) return false;
   
-  // Must contain at least one lowercase letter
+
   if (!/[a-z]/.test(password)) return false;
   
-  // Must contain at least one digit
+
   if (!/\d/.test(password)) return false;
   
-  // Must contain at least one special character
   if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password)) return false;
   
   return true;

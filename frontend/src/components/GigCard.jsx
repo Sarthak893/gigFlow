@@ -1,4 +1,4 @@
-// frontend/src/components/GigCard.jsx
+
 import { Link } from 'react-router-dom';
 
 export default function GigCard({ gig }) {

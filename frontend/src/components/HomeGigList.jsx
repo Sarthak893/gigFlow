@@ -1,4 +1,4 @@
-// frontend/src/components/HomeGigList.jsx
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 

@@ -10,7 +10,7 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('gigs');
   const [myGigs, setMyGigs] = useState([]);
   const [myBids, setMyBids] = useState([]);
-  const [openOpportunities, setOpenOpportunities] = useState(0); // 👈 NEW STATE
+  const [openOpportunities, setOpenOpportunities] = useState(0); 
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export default function Dashboard() {
         const [gigsRes, bidsRes, statsRes] = await Promise.all([
           api.getMyGigs(),
           api.getMyBids(),
-          api.getGigStats() // 👈 FETCH STATS
+          api.getGigStats() 
         ]);
         
         const gigs = gigsRes.ok ? await gigsRes.json() : [];
@@ -28,7 +28,7 @@ export default function Dashboard() {
 
         setMyGigs(gigs);
         setMyBids(bids);
-        setOpenOpportunities(stats.openGigs); // 👈 SET DYNAMIC VALUE
+        setOpenOpportunities(stats.openGigs);
       } catch (err) {
         console.error('Dashboard fetch error:', err);
       } finally {
@@ -48,7 +48,7 @@ export default function Dashboard() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Header with Stats */}
+      
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -66,7 +66,7 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* Stats Cards */}
+        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
           <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
             <p className="text-gray-600 text-sm">My Gigs</p>
@@ -83,7 +83,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Tabs */}
+      
       <div className="border-b border-gray-200 mb-6">
         <nav className="-mb-px flex space-x-8">
           <button
@@ -109,7 +109,7 @@ export default function Dashboard() {
         </nav>
       </div>
 
-      {/* Tab Content */}
+      
       {loading ? (
         <div className="text-center py-10">
           <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-indigo-600 border-t-transparent"></div>
@@ -200,7 +200,6 @@ export default function Dashboard() {
   );
 }
 
-// Reusable Empty State
 function EmptyState({ title, message, actionText, onAction }) {
   return (
     <div className="text-center py-12 bg-white rounded-xl border-2 border-dashed border-gray-300">

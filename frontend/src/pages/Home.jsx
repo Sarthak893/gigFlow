@@ -1,4 +1,4 @@
-// frontend/src/pages/Home.jsx
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -34,7 +34,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
+      
         <div className="bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-16">
           <div className="container mx-auto px-4 text-center max-w-3xl">
             <div className="inline-block bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm font-medium mb-4">
@@ -67,7 +67,7 @@ export default function Home() {
                       )}
     </div>
      </div>
-       {/* Search & Gig Listing */}
+      
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-2xl mx-auto mb-10">
           <form onSubmit={handleSearch} className="flex gap-2">

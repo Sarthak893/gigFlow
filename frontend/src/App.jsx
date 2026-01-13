@@ -1,20 +1,19 @@
-// frontend/src/App.jsx
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './context/AuthContext';
 import { AuthProvider } from './context/AuthContext';
 
-// Components
 import Navbar from './components/Navbar';
 import HomeGigList from './components/HomeGigList';
 
-// Pages
+
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import GigDetail from './pages/GigDetail';
 import PostGig from './pages/PostGig';
 
-// Protected Route (as a component)
+
 function ProtectedRoute({ children }) {
   const { user, loading } = useAuth();
   
@@ -66,7 +65,6 @@ function HomePage() {
   );
 }
 
-// Main App Content
 function AppContent() {
   return (
     <div className="min-h-screen bg-gray-50">

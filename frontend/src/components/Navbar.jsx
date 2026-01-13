@@ -1,4 +1,4 @@
-// frontend/src/components/Navbar.jsx
+
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -15,18 +15,18 @@ export default function Navbar() {
   return (
     <header className="sticky top-0 z-50 bg-white shadow-sm border-b">
       <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-        {/* Logo (Left) */}
+        
         <Link to="/" className="text-2xl font-bold text-blue-600 hover:text-blue-800 transition">
           GigFlow
         </Link>
 
-        {/* Navigation + Auth (Right) */}
+        
         <div className="flex items-center gap-3 sm:gap-4">
           {/* Nav Links */}
           <NavLink to="/" isActive={isActive('/')}>Home</NavLink>
           {user && <NavLink to="/dashboard" isActive={isActive('/dashboard')}>Dashboard</NavLink>}
 
-          {/* Auth Buttons or Greeting */}
+          
           {user ? (
             <>
               <span className="hidden sm:inline text-gray-700 font-medium">Hello, {user.name}!</span>
@@ -59,7 +59,6 @@ export default function Navbar() {
   );
 }
 
-// Reusable Nav Link
 function NavLink({ to, children, isActive }) {
   return (
     <Link

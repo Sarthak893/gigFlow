@@ -1,4 +1,4 @@
-// frontend/src/pages/Login.jsx
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -15,7 +15,7 @@ export default function Login() {
     e.preventDefault();
     setError('');
 
-    // Email validation
+    
     if (!email) {
       return setError('Email is required');
     }
