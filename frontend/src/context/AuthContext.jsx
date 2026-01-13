@@ -9,17 +9,31 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+
   useEffect(() => {
     const checkAuth = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        setLoading(false);
+        return;
+      }
+
       try {
         const res = await fetch(
           `${import.meta.env.VITE_API_BASE}/auth/me`,
-          { credentials: "include" }
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         if (res.ok) {
-          setUser(await res.json());
+          const data = await res.json();
+          setUser(data);
         } else {
+          localStorage.removeItem("token");
           setUser(null);
         }
       } catch (err) {
@@ -33,28 +47,36 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
+
   const login = async (email, password) => {
     const res = await api.login({ email, password });
+    const data = await res.json();
+
     if (res.ok) {
-      const data = await res.json();
-      setUser({ id: data.userId, name: data.name });
+      localStorage.setItem("token", data.token);
+      setUser(data.user);
       return { success: true };
     }
-    return { success: false, message: (await res.json()).message };
+
+    return { success: false, message: data.message };
   };
 
+ 
   const register = async (name, email, password) => {
     const res = await api.register({ name, email, password });
+    const data = await res.json();
+
     if (res.ok) {
-      const data = await res.json();
-      setUser({ id: data.userId, name: data.name });
+      localStorage.setItem("token", data.token);
+      setUser(data.user);
       return { success: true };
     }
-    return { success: false, message: (await res.json()).message };
+
+    return { success: false, message: data.message };
   };
 
-  const logout = async () => {
-    await api.logout();
+  const logout = () => {
+    localStorage.removeItem("token");
     setUser(null);
   };
 
