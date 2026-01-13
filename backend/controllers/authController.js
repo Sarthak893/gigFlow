@@ -2,6 +2,7 @@
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const { patch } = require('../routes/authRoutes');
 
 const generateToken = (userId) => {
   return jwt.sign({ id: userId }, process.env.JWT_SECRET, { expiresIn: '7d' });
@@ -25,7 +26,8 @@ const register = async (req, res) => {
     res.cookie('token', token, {
       httpOnly: true,
       secure: false, 
-      sameSite: 'lax',
+      sameSite: "none",  
+      
       maxAge: 7 * 24 * 60 * 60 * 1000 
     });
 
@@ -48,9 +50,10 @@ const login = async (req, res) => {
     const token = generateToken(user._id);
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       sameSite: 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000
+    
     });
 
     res.json({ success: true, userId: user._id, name: user.name });
