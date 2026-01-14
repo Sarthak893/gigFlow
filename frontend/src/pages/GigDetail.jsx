@@ -8,7 +8,7 @@ export default function GigDetail() {
   const { id: gigId } = useParams();
   const { user } = useAuth();
   const navigate = useNavigate();
-
+  const API_BASE = import.meta.env.VITE_API_BASE;
   const [gig, setGig] = useState(null);
   const [bids, setBids] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +21,7 @@ export default function GigDetail() {
     const fetchGigAndBids = async () => {
       try {
         
-        const gigRes = await fetch(`http://localhost:5000/api/gigs/${gigId}`);
+        const gigRes = await fetch(`${API_BASE}/gigs/${gigId}`);
         if (!gigRes.ok) throw new Error('Gig not found');
         const gigData = await gigRes.json();
         setGig(gigData);
