@@ -243,6 +243,8 @@ gigFlow/
 
 A short demo video explaining the hiring flow and dashboard is included 
 
+https://drive.google.com/file/d/1xNvgu4BgTNErHshPLsQ0DacRa1p8hrrM/view?usp=drive_link
+
 
 
 
